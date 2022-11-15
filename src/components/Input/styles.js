@@ -55,7 +55,7 @@ export const Container = styled.div`
   }
 
   section {
-    font-size: 0.675rem;
+    font-size: 0.625rem;
     position: absolute;
     left: 4.25rem;
     margin-top: 2px;
