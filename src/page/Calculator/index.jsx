@@ -94,6 +94,9 @@ const Calculator = () => {
             }
             setResults(array);
             setLoading(false);
+            toast.success('Simulation completed. Results are being shown.', {
+              autoClose: 1000,
+            });
             console.log(results);
           })
           .catch((error) => {
