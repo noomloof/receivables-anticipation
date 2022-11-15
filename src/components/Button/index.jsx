@@ -9,7 +9,7 @@ const Button = ({ text, buttonClick }) => {
   return (
     <Container>
       <button
-        onClick={() => buttonClick()}
+        onClick={loading ? null : () => buttonClick()}
         className='action-button'
       >
         {loading ? <div className='lds-dual-ring'></div> : text}
