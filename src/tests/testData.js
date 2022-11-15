@@ -1,7 +1,9 @@
 export const value = '10000';
 export const installments = '6';
 export const mdr = '5';
-export const periods = '5, 30, 90, 180';
+export const periods = '1, 30, 90, 180';
+export const periodsArray = ['1', '30', '90', '180'];
+export const valuesArray = ['7853', '8312', '9025', '9500'];
 export const missingMessage =
   'Verifique se os campos obrigatórios estão preenchidos';
 export const incorrectMessage =

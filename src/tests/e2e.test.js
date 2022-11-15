@@ -9,7 +9,9 @@ import {
   missingMessage,
   over10PeriodsMessage,
   periods,
+  periodsArray,
   value,
+  valuesArray,
 } from './testData';
 
 describe('../App.js', () => {
@@ -20,6 +22,17 @@ describe('../App.js', () => {
     const input = await page.$(target);
     await input.click({ clickCount: 3 });
     await page.keyboard.press('Backspace');
+  };
+
+  const basicInput = async () => {
+    await page.click('.input-value');
+    await page.type('.input-value', value);
+    await page.click('.input-installments');
+    await page.type('.input-installments', installments);
+    await page.click('.input-percent');
+    await page.type('.input-percent', mdr);
+    await page.click('.input-days');
+    await page.type('.input-days', periods);
   };
 
   beforeAll(async () => {
@@ -49,10 +62,7 @@ describe('../App.js', () => {
 
   it('inputs work properly', async () => {
     await page.goto('http://localhost:3000/');
-    await page.type('.input-value', value);
-    await page.type('.input-installments', installments);
-    await page.type('.input-percent', mdr);
-    await page.type('.input-days', periods);
+    await basicInput();
 
     // const input = await page.waitForSelector('.input-value');
     // const text = await page.evaluate((element) => element.value, input);
@@ -184,6 +194,57 @@ describe('../App.js', () => {
     expect(error6).toBe(above12Message);
     expect(error7).toBe(above100Message);
     expect(error8).toBe(over10PeriodsMessage);
+  });
+
+  it('calculator works with proper data', async () => {
+    await page.goto('http://localhost:3000/');
+    await basicInput();
+    await page.click('.action-button');
+    await new Promise((r) => setTimeout(r, 2000));
+
+    const day1 = await page.$eval(
+      `.day-${periodsArray[0]}`,
+      (e) => e.textContent
+    );
+    const day2 = await page.$eval(
+      `.day-${periodsArray[1]}`,
+      (e) => e.textContent
+    );
+    const day3 = await page.$eval(
+      `.day-${periodsArray[2]}`,
+      (e) => e.textContent
+    );
+    const day4 = await page.$eval(
+      `.day-${periodsArray[3]}`,
+      (e) => e.textContent
+    );
+
+    const value1 = await page.$eval(
+      `.value-${valuesArray[0]}`,
+      (e) => e.textContent
+    );
+    const value2 = await page.$eval(
+      `.value-${valuesArray[1]}`,
+      (e) => e.textContent
+    );
+    const value3 = await page.$eval(
+      `.value-${valuesArray[2]}`,
+      (e) => e.textContent
+    );
+    const value4 = await page.$eval(
+      `.value-${valuesArray[3]}`,
+      (e) => e.textContent
+    );
+
+    expect(day1).toContain('Amanhã');
+    expect(day2).toContain(periodsArray[1]);
+    expect(day3).toContain(periodsArray[2]);
+    expect(day4).toContain(periodsArray[3]);
+
+    expect(value1.replace(/\s/g, ' ')).toBe('R$ 78,53');
+    expect(value2.replace(/\s/g, ' ')).toBe('R$ 83,12');
+    expect(value3.replace(/\s/g, ' ')).toBe('R$ 90,25');
+    expect(value4.replace(/\s/g, ' ')).toBe('R$ 95,00');
   });
 
   afterAll(async () => {

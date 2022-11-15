@@ -96,7 +96,19 @@ const Calculator = () => {
             setLoading(false);
             console.log(results);
           })
-          .catch((error) => console.log(error.response.data));
+          .catch((error) => {
+            console.log(error);
+            if (error.response.status === 408) {
+              toast.error('Your request timed out', { autoClose: 1000 });
+              setLoading(false);
+            } else if (error.response.status === 500) {
+              toast.error(
+                'There was an internal server error. Please try again later.',
+                { autoClose: 1000 }
+              );
+              setLoading(false);
+            }
+          });
       }
     }
   };
@@ -108,19 +120,19 @@ const Calculator = () => {
           <h2 className='calc-title'>Simule sua antecipação</h2>
           <Input
             name='value'
-            label='Informe o valor de venda'
+            label='Informe o valor de venda *'
             detail='Em centavos.'
             setInput1={setInput1}
           />
           <Input
             name='installments'
-            label='Em quantas parcelas'
+            label='Em quantas parcelas *'
             detail='Máximo de 12 parcelas.'
             setInput2={setInput2}
           />
           <Input
             name='percent'
-            label='Percentual de MDR'
+            label='Percentual de MDR *'
             detail='Símbolo de porcentagem não necessário.'
             setInput3={setInput3}
           />
