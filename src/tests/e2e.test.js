@@ -49,7 +49,7 @@ describe('../App.js', () => {
     await page.waitForSelector('.calc-title');
 
     const text = await page.$eval('.calc-title', (e) => e.textContent);
-    expect(text).toContain('Simule sua antecipação');
+    expect(text).toContain('Simulate your prepayment');
   });
 
   it('results side contains basic text', async () => {
@@ -57,7 +57,7 @@ describe('../App.js', () => {
     await page.waitForSelector('.calc-title');
 
     const text = await page.$eval('.result-title', (e) => e.textContent);
-    expect(text).toContain('VOCÊ RECEBERÁ:');
+    expect(text).toContain("YOU'LL RECEIVE");
   });
 
   it('inputs work properly', async () => {
@@ -236,7 +236,7 @@ describe('../App.js', () => {
       (e) => e.textContent
     );
 
-    expect(day1).toContain('Amanhã');
+    expect(day1).toContain('Tomorrow');
     expect(day2).toContain(periodsArray[1]);
     expect(day3).toContain(periodsArray[2]);
     expect(day4).toContain(periodsArray[3]);
