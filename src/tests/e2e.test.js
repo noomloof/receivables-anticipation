@@ -10,6 +10,7 @@ import {
   over10PeriodsMessage,
   periods,
   periodsArray,
+  under1Message,
   value,
   valuesArray,
 } from './testData';
@@ -38,7 +39,7 @@ describe('../App.js', () => {
   beforeAll(async () => {
     browser = await puppeteer.launch({
       executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-      headless: false,
+      headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     page = await browser.newPage();
@@ -64,8 +65,6 @@ describe('../App.js', () => {
     await page.goto('http://localhost:3000/');
     await basicInput();
 
-    // const input = await page.waitForSelector('.input-value');
-    // const text = await page.evaluate((element) => element.value, input);
     const text1 = await page.$eval('.input-value', (e) => e.value);
     const text2 = await page.$eval('.input-installments', (e) => e.value);
     const text3 = await page.$eval('.input-percent', (e) => e.value);
@@ -144,6 +143,7 @@ describe('../App.js', () => {
     await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-value');
+    await clearInput('.input-installments');
     await page.type('.input-value', value);
     await page.type('.input-installments', '20');
     await page.click('.action-button');
@@ -158,11 +158,24 @@ describe('../App.js', () => {
     await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-installments');
+    await page.type('.input-installments', '0');
+    await page.click('.action-button');
+    await new Promise((r) => setTimeout(r, 1300));
+    const error7 = await page.evaluate(() => {
+      const divs = Array.from(
+        document.querySelectorAll('.Toastify__toast-body div')
+      );
+      return divs[1].textContent;
+    });
+
+    await new Promise((r) => setTimeout(r, 300));
+
+    await clearInput('.input-installments');
     await page.type('.input-installments', installments);
     await page.type('.input-percent', '101');
     await page.click('.action-button');
     await new Promise((r) => setTimeout(r, 1300));
-    const error7 = await page.evaluate(() => {
+    const error8 = await page.evaluate(() => {
       const divs = Array.from(
         document.querySelectorAll('.Toastify__toast-body div')
       );
@@ -179,7 +192,7 @@ describe('../App.js', () => {
     );
     await page.click('.action-button');
     await new Promise((r) => setTimeout(r, 1300));
-    const error8 = await page.evaluate(() => {
+    const error9 = await page.evaluate(() => {
       const divs = Array.from(
         document.querySelectorAll('.Toastify__toast-body div')
       );
@@ -192,8 +205,9 @@ describe('../App.js', () => {
     expect(error4).toBe(incorrectMessage);
     expect(error5).toBe(lowMessage);
     expect(error6).toBe(above12Message);
-    expect(error7).toBe(above100Message);
-    expect(error8).toBe(over10PeriodsMessage);
+    expect(error7).toBe(under1Message);
+    expect(error8).toBe(above100Message);
+    expect(error9).toBe(over10PeriodsMessage);
   });
 
   it('calculator works with proper data', async () => {

@@ -8,5 +8,6 @@ export const missingMessage = 'Ensure all obligatory fields are filled';
 export const incorrectMessage = 'Ensure given data is correct';
 export const lowMessage = 'Value must be over 1000 cents';
 export const above12Message = 'Number of installments must not be over 12';
+export const under1Message = 'Number of installments must not be under 1';
 export const above100Message = 'MDR value must not be over 100%';
 export const over10PeriodsMessage = 'Number of time spans must not exceed 10';

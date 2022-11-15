@@ -73,6 +73,11 @@ const Calculator = () => {
           autoClose: 1000,
         });
         setLoading(false);
+      } else if (attr2 < 1) {
+        toast.error('Number of installments must not be under 1', {
+          autoClose: 1000,
+        });
+        setLoading(false);
       } else if (attr3 > 100) {
         toast.error('MDR value must not be over 100%', {
           autoClose: 1000,
