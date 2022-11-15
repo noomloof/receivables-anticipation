@@ -22,6 +22,7 @@ const Calculator = () => {
   const { input2, setInput2 } = useContext(Input2Context);
   const { input3, setInput3 } = useContext(Input3Context);
   const { input4, setInput4 } = useContext(Input4Context);
+  // Yep, this is an atrocity, I know.
   const { setLoading } = useContext(LoadingContext);
 
   const [results, setResults] = useState([]);
@@ -31,12 +32,20 @@ const Calculator = () => {
     let array = [];
 
     if (!input1 || !input2 || !input3) {
-      toast.error('Verifique se os campos obrigatórios estão preenchidos', {
+      // Verifies if all inputs have a value,
+      // whichever and whatever it is.
+
+      toast.error('Ensure all obligatory fields are filled', {
         autoClose: 1000,
       });
       setLoading(false);
     } else {
       if (input4) {
+        // If all inputs have values, checks for values,
+        // separates them by commas, or substitutes dashes
+        // and periods for commas, so that it can be turned
+        // into an array.
+
         let formattedDays = input4.replaceAll(/\s/g, '').replace(/[.-]/g, ',');
         console.log(formattedDays);
         array = formattedDays.split(',').map((string) => Number(string));
@@ -50,27 +59,27 @@ const Calculator = () => {
       const attr3 = Number(input3.replace(/%/g, ''));
 
       if (isNaN(attr1) || isNaN(attr2) || isNaN(attr3)) {
-        toast.error('Verifique se os dados inseridos estão corretos', {
+        toast.error('Ensure given data is correct', {
           autoClose: 1000,
         });
         setLoading(false);
       } else if (attr1 < 1000) {
-        toast.error('Valor deve ser acima ou igual a 1000 centavos', {
+        toast.error('Value must be over 1000 cents', {
           autoClose: 1000,
         });
         setLoading(false);
       } else if (attr2 > 12) {
-        toast.error('O número de parcelas não pode exceder 12', {
+        toast.error('Number of installments must not be over 12', {
           autoClose: 1000,
         });
         setLoading(false);
       } else if (attr3 > 100) {
-        toast.error('A taxa MDR não pode superar 100%', {
+        toast.error('MDR value must not be over 100%', {
           autoClose: 1000,
         });
         setLoading(false);
       } else if (array.length > 10) {
-        toast.error('O número de periodos de tempo não pode exceder 10', {
+        toast.error('Number of time spans must not exceed 10', {
           autoClose: 1000,
         });
         setLoading(false);
@@ -120,38 +129,38 @@ const Calculator = () => {
     <Container>
       <DualHolder>
         <InputHolder>
-          <h2 className='calc-title'>Simule sua antecipação</h2>
+          <h2 className='calc-title'>Simulate your prepayment</h2>
           <Input
             name='value'
-            label='Informe o valor de venda *'
-            detail='Em centavos.'
+            label='Input the sale value *'
+            detail='In cents.'
             setInput1={setInput1}
           />
           <Input
             name='installments'
-            label='Em quantas parcelas *'
-            detail='Máximo de 12 parcelas.'
+            label='How many installments? *'
+            detail='12 installments maximum.'
             setInput2={setInput2}
           />
           <Input
             name='percent'
-            label='Percentual de MDR *'
-            detail='Símbolo de porcentagem não necessário.'
+            label='MDR percentage *'
+            detail='Percent sign not necessary.'
             setInput3={setInput3}
           />
           <Input
             name='days'
-            label='Informe os períodos de tempo'
+            label='Input the time spans'
             setInput4={setInput4}
-            detail='Em dias, separe os valores com virgulas. Opcional.'
+            detail='In days. Separate them with commas. Optional.'
           />
           <Button
-            text='Simular'
+            text='Simulate'
             buttonClick={buttonClick}
           />
         </InputHolder>
         <ResultsHolder>
-          <h1 className='result-title'> VOCÊ RECEBERÁ: </h1>
+          <h1 className='result-title'> YOU'LL RECEIVE: </h1>
           <HR>
             <hr></hr>
           </HR>
