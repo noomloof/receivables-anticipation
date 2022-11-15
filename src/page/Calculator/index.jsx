@@ -47,9 +47,7 @@ const Calculator = () => {
         // into an array.
 
         let formattedDays = input4.replaceAll(/\s/g, '').replace(/[.-]/g, ',');
-        console.log(formattedDays);
         array = formattedDays.split(',').map((string) => Number(string));
-        console.log(array);
       } else {
         array = [1, 30, 60, 90];
       }
@@ -99,7 +97,6 @@ const Calculator = () => {
         api
           .post('', newBody)
           .then((response) => {
-            console.log(response.data);
             let array = [];
             let days = Object.keys(response.data);
             let values = Object.values(response.data);
@@ -111,10 +108,8 @@ const Calculator = () => {
             toast.success('Simulation completed. Results are being shown.', {
               autoClose: 1000,
             });
-            console.log(results);
           })
           .catch((error) => {
-            console.log(error);
             if (error.response.status === 408) {
               toast.error('Your request timed out', { autoClose: 1000 });
               setLoading(false);
