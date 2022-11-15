@@ -19,12 +19,17 @@ describe('../App.js', () => {
   let browser;
   let page;
 
+  // Function for clearing input.
+  // Takes the target element as a parameter.
   const clearInput = async (target) => {
     const input = await page.$(target);
     await input.click({ clickCount: 3 });
     await page.keyboard.press('Backspace');
   };
 
+  // Function for inserting basic input.
+  // Takes the preset values from ./testData.js
+  // and inserts them into the inputs.
   const basicInput = async () => {
     await page.click('.input-value');
     await page.type('.input-value', value);
@@ -37,15 +42,22 @@ describe('../App.js', () => {
   };
 
   beforeAll(async () => {
+    // Basic setup.
+    // Puppeteer 1.19.x was bugging out, so there
+    // was a need to downgrade it to 1.18.x and as such,
+    // extra parameters were needed.
     browser = await puppeteer.launch({
       executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-      headless: true,
+      headless: true, // Set to FALSE if you wish to see it in action.
+      // Otherwise, leave it on TRUE.
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     page = await browser.newPage();
   });
 
   it('calculator side contains basic text', async () => {
+    // Tests if the text is being rendered properly.
+    // Dummy test, really.
     await page.goto('http://localhost:3000/');
     await page.waitForSelector('.calc-title');
 
@@ -54,6 +66,7 @@ describe('../App.js', () => {
   });
 
   it('results side contains basic text', async () => {
+    // Like the test before, just a dummy test.
     await page.goto('http://localhost:3000/');
     await page.waitForSelector('.calc-title');
 
@@ -62,6 +75,10 @@ describe('../App.js', () => {
   });
 
   it('inputs work properly', async () => {
+    // Checks if inputs can be altered,
+    // giving them values by "typing" and then
+    // retrieving them, comparing captured values
+    // and preset values.
     await page.goto('http://localhost:3000/');
     await basicInput();
 
@@ -77,6 +94,9 @@ describe('../App.js', () => {
 
   jest.setTimeout(30000);
   it('trying to calculate with missing and/or wrong information fires an error', async () => {
+    // First section, inputs empty.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there is no info.
     await page.goto('http://localhost:3000/');
     await page.click('.action-button');
     await new Promise((r) => setTimeout(r, 1300));
@@ -89,6 +109,9 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Second section, only value input is filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there is not enough info
     await page.click('.input-value');
     await page.type('.input-value', value);
     await page.click('.action-button');
@@ -99,8 +122,12 @@ describe('../App.js', () => {
       );
       return divs[1].textContent;
     });
+
     await new Promise((r) => setTimeout(r, 300));
 
+    // Third section, only MDR input is empty.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there is still not enough info
     await page.click('.input-installments');
     await page.type('.input-installments', installments);
     await page.click('.action-button');
@@ -111,8 +138,13 @@ describe('../App.js', () => {
       );
       return divs[1].textContent;
     });
+
     await new Promise((r) => setTimeout(r, 300));
 
+    // Fourth section, value input is composed by letters.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because value must be an integer.
     await page.click('.input-percent');
     await page.type('.input-percent', mdr);
     await clearInput('.input-value');
@@ -129,6 +161,10 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Fifth section, value input is filled, but with a value of 500.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because value must be over 10000
     await clearInput('.input-value');
     await page.type('.input-value', '500');
     await page.click('.action-button');
@@ -142,9 +178,14 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Sixth section, value input is fixed.
+    // Installments field is given a value of 20.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there can be no more than 12 installments.
     await clearInput('.input-value');
-    await clearInput('.input-installments');
     await page.type('.input-value', value);
+    await clearInput('.input-installments');
     await page.type('.input-installments', '20');
     await page.click('.action-button');
     await new Promise((r) => setTimeout(r, 1300));
@@ -157,6 +198,10 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Seventh section, installments field is given a value of 0.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there can be no less than 1 installment.
     await clearInput('.input-installments');
     await page.type('.input-installments', '0');
     await page.click('.action-button');
@@ -170,6 +215,11 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Eighth section, installments field is fixed.
+    // MDR field is given a value of 101%.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because MDR value must be under 100%.
     await clearInput('.input-installments');
     await page.type('.input-installments', installments);
     await page.type('.input-percent', '101');
@@ -184,6 +234,11 @@ describe('../App.js', () => {
 
     await new Promise((r) => setTimeout(r, 300));
 
+    // Ninth section, MDR field is fixed.
+    // Time span field is given a string composed of 11 time periods.
+    // All obligatory inputs are filled.
+    // Puppeteer tries pressing the button,
+    // error should be thrown because there can be no more than 10 time spans.
     await clearInput('.input-percent');
     await page.type('.input-percent', mdr);
     await page.type(
@@ -199,6 +254,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
+    // Checks every message error received.
     expect(error1).toBe(missingMessage);
     expect(error2).toBe(missingMessage);
     expect(error3).toBe(missingMessage);
@@ -211,6 +267,14 @@ describe('../App.js', () => {
   });
 
   it('calculator works with proper data', async () => {
+    // Tests if the calculator works properly.
+    // First, we fill all the inputs, and send that information.
+
+    // After a brief pause, we capture every element that has
+    // the calculation results.
+
+    // Lastly, we compare all the captured elements' values
+    // with our preset information.
     await page.goto('http://localhost:3000/');
     await basicInput();
     await page.click('.action-button');
@@ -255,10 +319,21 @@ describe('../App.js', () => {
     expect(day3).toContain(periodsArray[2]);
     expect(day4).toContain(periodsArray[3]);
 
+    // There was a need for a small regex since there was an error
+    // between "R$ 78,53" and "R$ 78,53".
+
+    // "How are they different?", you may ask.
+    // I would like to know as well, but it was funny as hell.
+
+    // Likely able to reproduce it if you uncomment lines 333 - 336.
     expect(value1.replace(/\s/g, ' ')).toBe('R$ 78,53');
     expect(value2.replace(/\s/g, ' ')).toBe('R$ 83,12');
     expect(value3.replace(/\s/g, ' ')).toBe('R$ 90,25');
     expect(value4.replace(/\s/g, ' ')).toBe('R$ 95,00');
+    // expect(value1).toBe('R$ 78,53');
+    // expect(value2).toBe('R$ 83,12');
+    // expect(value3).toBe('R$ 90,25');
+    // expect(value4).toBe('R$ 95,00');
   });
 
   afterAll(async () => {

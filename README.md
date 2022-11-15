@@ -17,4 +17,9 @@ The page will reload when you make changes.<br>
 
 ### `yarn test`
 
+Worth noting, you may need to execute <br>
+`yarn start` first to ensure the tests work, and <br>
+close any other apps running in development mode <br>
+as well. <br>
+
 Runs the test file present in _src/tests_.
