@@ -1,0 +1,24 @@
+.lds-dual-ring {
+  display: inline-block;
+  width: 3.56vw;
+  height: 2vh;
+}
+.lds-dual-ring:after {
+  content: ' ';
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin-left: 14px;
+  border-radius: 50%;
+  border: 6px solid #76c1f6;
+  border-color: #76c1f6 transparent #76c1f6 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
