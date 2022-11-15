@@ -78,7 +78,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await page.click('.input-value');
     await page.type('.input-value', value);
@@ -90,7 +90,7 @@ describe('../App.js', () => {
       );
       return divs[1].textContent;
     });
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await page.click('.input-installments');
     await page.type('.input-installments', installments);
@@ -102,7 +102,7 @@ describe('../App.js', () => {
       );
       return divs[1].textContent;
     });
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await page.click('.input-percent');
     await page.type('.input-percent', mdr);
@@ -118,7 +118,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-value');
     await page.type('.input-value', '500');
@@ -131,7 +131,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-value');
     await page.type('.input-value', value);
@@ -145,7 +145,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-installments');
     await page.type('.input-installments', installments);
@@ -159,7 +159,7 @@ describe('../App.js', () => {
       return divs[1].textContent;
     });
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 300));
 
     await clearInput('.input-percent');
     await page.type('.input-percent', mdr);
