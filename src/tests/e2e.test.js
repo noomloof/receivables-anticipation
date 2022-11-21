@@ -47,8 +47,7 @@ describe('../App.js', () => {
     // was a need to downgrade it to 1.18.x and as such,
     // extra parameters were needed.
     browser = await puppeteer.launch({
-      executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-      headless: true, // Set to FALSE if you wish to see it in action.
+      headless: false, // Set to FALSE if you wish to see it in action.
       // Otherwise, leave it on TRUE.
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
